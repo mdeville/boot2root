@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# Trivial Enumeration
+# script.
+#
+
+if [ -z "$1" ]; then
+	echo "Usage: $0 <ip>"
+	exit 0
+fi
+
+echo "Processing: $1"
+
+# Testing SSH
+SSH_BANNER=$(nc -w1 $1 22)
+echo "SSH Version: $SSH_BANNER"
+
+# Processing Nmap
+nmap -A -T4 -Pn $1
