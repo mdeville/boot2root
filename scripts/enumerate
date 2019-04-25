@@ -16,4 +16,4 @@ SSH_BANNER=$(nc -w1 $1 22)
 echo "SSH Version: $SSH_BANNER"
 
 # Processing Nmap
-nmap -A -T4 -Pn $1
+nmap -A -T4 -Pn --reason -vvv $1

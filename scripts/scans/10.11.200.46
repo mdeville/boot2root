@@ -1,40 +1,169 @@
 Processing: 10.11.200.46
 SSH Version: SSH-2.0-OpenSSH_5.9p1 Debian-5ubuntu1.7
-Starting Nmap 7.70 ( https://nmap.org ) at 2019-04-24 14:52 CEST
+Starting Nmap 7.70 ( https://nmap.org ) at 2019-04-25 10:50 CEST
+NSE: Loaded 148 scripts for scanning.
+NSE: Script Pre-scanning.
+NSE: Starting runlevel 1 (of 2) scan.
+Initiating NSE at 10:50
+Completed NSE at 10:50, 0.00s elapsed
+NSE: Starting runlevel 2 (of 2) scan.
+Initiating NSE at 10:50
+Completed NSE at 10:50, 0.00s elapsed
+Initiating Parallel DNS resolution of 1 host. at 10:50
+Completed Parallel DNS resolution of 1 host. at 10:50, 0.00s elapsed
+DNS resolution of 1 IPs took 0.00s. Mode: Async [#: 2, OK: 0, NX: 1, DR: 0, SF: 0, TR: 1, CN: 0]
+Initiating Connect Scan at 10:50
+Scanning 10.11.200.46 [1000 ports]
+Discovered open port 21/tcp on 10.11.200.46
+Discovered open port 80/tcp on 10.11.200.46
+Discovered open port 443/tcp on 10.11.200.46
+Discovered open port 22/tcp on 10.11.200.46
+Discovered open port 143/tcp on 10.11.200.46
+Discovered open port 993/tcp on 10.11.200.46
+Completed Connect Scan at 10:50, 0.04s elapsed (1000 total ports)
+Initiating Service scan at 10:50
+Scanning 6 services on 10.11.200.46
+Completed Service scan at 10:50, 12.06s elapsed (6 services on 1 host)
+NSE: Script scanning 10.11.200.46.
+NSE: Starting runlevel 1 (of 2) scan.
+Initiating NSE at 10:50
+Completed NSE at 10:50, 0.68s elapsed
+NSE: Starting runlevel 2 (of 2) scan.
+Initiating NSE at 10:50
+Completed NSE at 10:50, 0.00s elapsed
 Nmap scan report for 10.11.200.46
-Host is up (0.00077s latency).
+Host is up, received user-set (0.00068s latency).
+Scanned at 2019-04-25 10:50:10 CEST for 13s
 Not shown: 994 closed ports
-PORT    STATE SERVICE  VERSION
-21/tcp  open  ftp      vsftpd 2.0.8 or later
+Reason: 994 conn-refused
+PORT    STATE SERVICE  REASON  VERSION
+21/tcp  open  ftp      syn-ack vsftpd 2.0.8 or later
 |_ftp-anon: got code 500 "OOPS: vsftpd: refusing to run with writable root inside chroot()".
-22/tcp  open  ssh      OpenSSH 5.9p1 Debian 5ubuntu1.7 (Ubuntu Linux; protocol 2.0)
+22/tcp  open  ssh      syn-ack OpenSSH 5.9p1 Debian 5ubuntu1.7 (Ubuntu Linux; protocol 2.0)
 | ssh-hostkey: 
 |   1024 07:bf:02:20:f0:8a:c8:48:1e:fc:41:ae:a4:46:fa:25 (DSA)
+| ssh-dss AAAAB3NzaC1kc3MAAACBANy4kCYLoBAylTLMh64JVr40/F9bciwyI6xUYNGxwUcQSZO4isexdm9EmOGxstbAs2Hcfq9JssaCGBX/gAENQ6+0fI7AYhM2H0UmzITyd/xd8LYljaLeE6qIyfM/1Enjbl04FMsK4FvYr94Dz2ucWLraIrv+mKO8kqN8nR5CXbpxAAAAFQDjJ8bghJac5CEvsPfVXq41Zq03lwAAAIB03IhWaPcHl5FLycI6/jhANgwyk5sIRPmAy2BoQ0pGnZjEaRIz5XRW7uNM4WScbZ6J9Ztk48KDqS/RaWpHzOxolx3xfIaoOJeNv8SyUPleK/+JcJTSX8hVsijQ91W+U9GiMPGlZLWy5uzDt+v4Pfagor7KQuMR7RDMA/CASfwYUAAAAIAL6FIxFwQFgzpslh0KjjKCeZ7EFTrbdIzp8NDGzfA9zXb/znT67oAClH6sVZCjqPQHwE/+4FIw0ek5Bec8fEXuqUDWQvkePUaKaMVnN2SnTMB1TG2I5UbrigrEFMudWzqVZBdb1eH44UrdPhDC3HR94pmM7ppL82elMAqK4XSNgQ==
 |   2048 26:dd:80:a3:df:c4:4b:53:1e:53:42:46:ef:6e:30:b2 (RSA)
-|_  256 cf:c3:8c:31:d7:47:7c:84:e2:d2:16:31:b2:8e:63:a7 (ECDSA)
-80/tcp  open  http     Apache httpd 2.2.22 ((Ubuntu))
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4oEueIHc1nDjKzt/MI7Wz8sQi13IZQZuG6FtaK6aBxkTztoBLLqSitQ6y2zB+kEdc9BJTCU2utolXic/JfcBwWJyMi0JDBAXdgctpx4JB731cxHntCldMMOlDdaw57GfdXQVqJLC0ev8o6ADqJCK3tgcP9lJKrbVVS+LmnoCqQaSk32LPGRTPJrYbL3rie6KrTgXmkiWqRRqMYrkp8MiVRSbsN1Hy76km1lt/uh3srXkhM7YLdUp3efVOr2GO2301asEAJK/WAGZHIb5V8R6Qj7LB54v/n62coexOJKq77q6fLB5cgaHdt3nBJWC6Z4aLf66CsvwP6tUsgO7XcD9n
+|   256 cf:c3:8c:31:d7:47:7c:84:e2:d2:16:31:b2:8e:63:a7 (ECDSA)
+|_ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOJYMfb3+o/QgTjgRIduPs2JRTkRb1ZPY/42VUqM8ZI60YVcWEmryGbRyB5tkGCDrb8465YO0SzAfJSWSJfoLxQ=
+80/tcp  open  http     syn-ack Apache httpd 2.2.22 ((Ubuntu))
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
 |_http-server-header: Apache/2.2.22 (Ubuntu)
 |_http-title: Hack me if you can
-143/tcp open  imap     Dovecot imapd
-|_imap-capabilities: more IMAP4rev1 have LOGIN-REFERRALS STARTTLS LOGINDISABLEDA0001 post-login ID listed IDLE LITERAL+ SASL-IR capabilities Pre-login ENABLE OK
-| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server
+143/tcp open  imap     syn-ack Dovecot imapd
+|_imap-capabilities: post-login SASL-IR STARTTLS LOGINDISABLEDA0001 IMAP4rev1 ENABLE Pre-login more ID OK IDLE have LITERAL+ listed capabilities LOGIN-REFERRALS
+| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@mail.borntosec.net/organizationalUnitName=localhost
+| Issuer: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@mail.borntosec.net/organizationalUnitName=localhost
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha1WithRSAEncryption
 | Not valid before: 2015-10-08T20:57:30
-|_Not valid after:  2025-10-07T20:57:30
-|_ssl-date: 2019-04-24T12:52:59+00:00; 0s from scanner time.
-443/tcp open  ssl/http Apache httpd 2.2.22
+| Not valid after:  2025-10-07T20:57:30
+| MD5:   ea11 cc28 787e 147e a72c 8588 e562 e9b7
+| SHA-1: 2d09 d85f e501 9a67 413e c2d1 6237 11de a91c afbe
+| -----BEGIN CERTIFICATE-----
+| MIIDrzCCApegAwIBAgIJAN968TzwGVlvMA0GCSqGSIb3DQEBBQUAMG4xHDAaBgNV
+| BAoME0RvdmVjb3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAG
+| A1UEAwwJbG9jYWxob3N0MSYwJAYJKoZIhvcNAQkBFhdyb290QG1haWwuYm9ybnRv
+| c2VjLm5ldDAeFw0xNTEwMDgyMDU3MzBaFw0yNTEwMDcyMDU3MzBaMG4xHDAaBgNV
+| BAoME0RvdmVjb3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAG
+| A1UEAwwJbG9jYWxob3N0MSYwJAYJKoZIhvcNAQkBFhdyb290QG1haWwuYm9ybnRv
+| c2VjLm5ldDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMpjPQ2I6YkN
+| jZpxkEjfw7XxZhr+oKwqvb4Uc6CEHzrY4z/zG/HsZ/cgNLgYkLevEf0+DIPliYSG
+| o7yht28wbyW1GZGBvh5wYBRfJm8BDc5iyyuayQGxAOKXmgycv58jVvr4kuF0P0xW
+| 5vBHxzfDF1AXB2qNKg1h5oc6My1ox6E8THSxUrCwzG2b4I8qdpiAkI/G+My8U5kQ
+| fSkL5OnKZ5Z1+pY3L9PzpNM6RJmx53ffi9jBlHnQ+TVTOzx72nqyKgR/at5P/O4W
+| SxxMztVY6d8ejaA0MQEcIjEQdTXFyCnfj1mHXRHpHaCQ6iVvkbJwJmKEWVXjcERo
+| IVMik7zn4hMCAwEAAaNQME4wHQYDVR0OBBYEFA4UxwArd2vFwnkguZAOlIz01Qqs
+| MB8GA1UdIwQYMBaAFA4UxwArd2vFwnkguZAOlIz01QqsMAwGA1UdEwQFMAMBAf8w
+| DQYJKoZIhvcNAQEFBQADggEBAKuoOkJBTDFjE6a066CPXQ6ulE6siN1B+nw95NnO
+| N/RZrjEkEr24HAFJxn1zXgjEhlYToJgTNTCGLpOKr0weFEJcTiZLNuh7v++WLIM5
+| YBpwscnbxL+2ak9PLbGGVyq+RrX3RTzD5t6WZChwxCPqcNORB9pQknO9a7qG9kpl
+| 0ljGwg/xYvY+tETYBSz88Wy053Dq+4on5tzkeLOxVi1WSA3XxdbQrS5kmfGCCIVi
+| Phl8QItIxBdZGoOY2niOszqDU4gaqKsx7wcIsDcKoXl2lNutwV8Eb/HLBo8KBXjr
+| u3axYWy9JvJQkowL0Z5oHss3a2J3ErljjQLUlUFR6sd+tz0=
+|_-----END CERTIFICATE-----
+|_ssl-date: 2019-04-25T08:50:23+00:00; 0s from scanner time.
+443/tcp open  ssl/http syn-ack Apache httpd 2.2.22
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
 |_http-server-header: Apache/2.2.22 (Ubuntu)
 |_http-title: 404 Not Found
 | ssl-cert: Subject: commonName=BornToSec
+| Issuer: commonName=BornToSec
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha1WithRSAEncryption
 | Not valid before: 2015-10-08T00:19:46
-|_Not valid after:  2025-10-05T00:19:46
-|_ssl-date: 2019-04-24T12:52:59+00:00; 0s from scanner time.
-993/tcp open  ssl/imap Dovecot imapd
-|_imap-capabilities: IMAP4rev1 more LOGIN-REFERRALS have post-login capabilities ID listed IDLE LITERAL+ SASL-IR Pre-login OK ENABLE AUTH=PLAINA0001
-| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server
+| Not valid after:  2025-10-05T00:19:46
+| MD5:   3f63 02ca 0bb1 e732 9987 6887 3623 86a3
+| SHA-1: eebc f8de 3422 dd63 5314 9d47 811f f6d1 8f77 c98d
+| -----BEGIN CERTIFICATE-----
+| MIICpDCCAYwCCQDVG5xgrjCJoDANBgkqhkiG9w0BAQUFADAUMRIwEAYDVQQDEwlC
+| b3JuVG9TZWMwHhcNMTUxMDA4MDAxOTQ2WhcNMjUxMDA1MDAxOTQ2WjAUMRIwEAYD
+| VQQDEwlCb3JuVG9TZWMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC8
+| 1ChnI0Z4calM5DQc/Jw6py+3avYfKFCeRqHbOz/NxkBBRFXKDSwBX7z9+yDjjISb
+| FZsb7Oc4q0M3MirRvivV7RXsv9oy5+TwVOG3pryK/SQVyaTR5auY/omHN4sV283i
+| eBwGDVujf2vdzj0BzfZr7Pwpp+iCx6vGXVhwuEVwP3Ao8SVckMc0xXERyYQSgA9r
+| l7OJ3hKswfzqhp6VuJMIOe38QD2Hmj4S/SAnC8X5MWwspI5ZSyU7YF3aKpuEzpBC
+| kU7nQr6eFU9nq6c7/u3vrs5GAjOVjJ4v32j+yC9kwAPy0s756SHDobaguVYx9Ias
+| ddKjVoFa+wy0zMeEEGztAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAJrrrBK9y1dz
+| SG5vLml0PrZR66L+lHCYpz/hSmmV2DyeYtRcZ5yl0qxBCtT5L0L/e2PGdXegQz/A
+| L99S3zhfSkB+tF9iTEx6RfInG7SvYlaDrMdilCRsto8VDad4NXNq8+hJRqkpTRoO
+| hEPe/J+lVgUcekcUFgQ1c+gpRtMdzci11hRdTapLL8Ve/8SCVuTVK3LL/sZ0Oz8l
+| l+Gvvh/7EZ7DylyPNH1vq7MZvy+cpEadrimGX10dKXiYfhUFbnq3bd0ZXGHKT1iA
+| JGtUfQ7nNuJ8R5MaPr+73mhbV4wwcmaDz1e66XUi9EcvSWvAe+zSy93YwsV1eX91
+| FU56FFipSCQ=
+|_-----END CERTIFICATE-----
+|_ssl-date: 2019-04-25T08:50:22+00:00; 0s from scanner time.
+993/tcp open  ssl/imap syn-ack Dovecot imapd
+|_imap-capabilities: SASL-IR post-login listed IMAP4rev1 ENABLE Pre-login more ID OK IDLE have LITERAL+ AUTH=PLAINA0001 capabilities LOGIN-REFERRALS
+| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@mail.borntosec.net/organizationalUnitName=localhost
+| Issuer: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@mail.borntosec.net/organizationalUnitName=localhost
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha1WithRSAEncryption
 | Not valid before: 2015-10-08T20:57:30
-|_Not valid after:  2025-10-07T20:57:30
-|_ssl-date: 2019-04-24T12:52:59+00:00; 0s from scanner time.
+| Not valid after:  2025-10-07T20:57:30
+| MD5:   ea11 cc28 787e 147e a72c 8588 e562 e9b7
+| SHA-1: 2d09 d85f e501 9a67 413e c2d1 6237 11de a91c afbe
+| -----BEGIN CERTIFICATE-----
+| MIIDrzCCApegAwIBAgIJAN968TzwGVlvMA0GCSqGSIb3DQEBBQUAMG4xHDAaBgNV
+| BAoME0RvdmVjb3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAG
+| A1UEAwwJbG9jYWxob3N0MSYwJAYJKoZIhvcNAQkBFhdyb290QG1haWwuYm9ybnRv
+| c2VjLm5ldDAeFw0xNTEwMDgyMDU3MzBaFw0yNTEwMDcyMDU3MzBaMG4xHDAaBgNV
+| BAoME0RvdmVjb3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAG
+| A1UEAwwJbG9jYWxob3N0MSYwJAYJKoZIhvcNAQkBFhdyb290QG1haWwuYm9ybnRv
+| c2VjLm5ldDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMpjPQ2I6YkN
+| jZpxkEjfw7XxZhr+oKwqvb4Uc6CEHzrY4z/zG/HsZ/cgNLgYkLevEf0+DIPliYSG
+| o7yht28wbyW1GZGBvh5wYBRfJm8BDc5iyyuayQGxAOKXmgycv58jVvr4kuF0P0xW
+| 5vBHxzfDF1AXB2qNKg1h5oc6My1ox6E8THSxUrCwzG2b4I8qdpiAkI/G+My8U5kQ
+| fSkL5OnKZ5Z1+pY3L9PzpNM6RJmx53ffi9jBlHnQ+TVTOzx72nqyKgR/at5P/O4W
+| SxxMztVY6d8ejaA0MQEcIjEQdTXFyCnfj1mHXRHpHaCQ6iVvkbJwJmKEWVXjcERo
+| IVMik7zn4hMCAwEAAaNQME4wHQYDVR0OBBYEFA4UxwArd2vFwnkguZAOlIz01Qqs
+| MB8GA1UdIwQYMBaAFA4UxwArd2vFwnkguZAOlIz01QqsMAwGA1UdEwQFMAMBAf8w
+| DQYJKoZIhvcNAQEFBQADggEBAKuoOkJBTDFjE6a066CPXQ6ulE6siN1B+nw95NnO
+| N/RZrjEkEr24HAFJxn1zXgjEhlYToJgTNTCGLpOKr0weFEJcTiZLNuh7v++WLIM5
+| YBpwscnbxL+2ak9PLbGGVyq+RrX3RTzD5t6WZChwxCPqcNORB9pQknO9a7qG9kpl
+| 0ljGwg/xYvY+tETYBSz88Wy053Dq+4on5tzkeLOxVi1WSA3XxdbQrS5kmfGCCIVi
+| Phl8QItIxBdZGoOY2niOszqDU4gaqKsx7wcIsDcKoXl2lNutwV8Eb/HLBo8KBXjr
+| u3axYWy9JvJQkowL0Z5oHss3a2J3ErljjQLUlUFR6sd+tz0=
+|_-----END CERTIFICATE-----
+|_ssl-date: 2019-04-25T08:50:22+00:00; 0s from scanner time.
 Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
+Host script results:
+|_clock-skew: mean: 0s, deviation: 0s, median: 0s
+
+NSE: Script Post-scanning.
+NSE: Starting runlevel 1 (of 2) scan.
+Initiating NSE at 10:50
+Completed NSE at 10:50, 0.00s elapsed
+NSE: Starting runlevel 2 (of 2) scan.
+Initiating NSE at 10:50
+Completed NSE at 10:50, 0.00s elapsed
+Read data files from: /Users/ctrouill/.brew/bin/../share/nmap
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 13.15 seconds
+Nmap done: 1 IP address (1 host up) scanned in 13.22 seconds
