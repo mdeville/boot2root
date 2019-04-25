@@ -3,7 +3,7 @@
 ## Contexte
 
 L'ISO fournie est executé dans *VirtualBox* avec un adaptateur
-réseau attaché sur *Bridged Adapter* sur *en0: Ethernet* afin
+réseau attaché sur **Bridged Adapter** sur **en0: Ethernet** afin
 de pouvoir travailler sur le poste en local.
 
 ## Collecte d’informations
@@ -12,7 +12,7 @@ de pouvoir travailler sur le poste en local.
 
 VirtualBox fournit des outils en ligne de commande permettant
 de query certaines informations a propos de la VM. Il est possible
-dans un premier temps de récuperer la version du kernel/release ainsi
+dans un premier temps de récuperer la version du **kernel/release** ainsi
 que son IP associé via de simples commandes:
 
 ```bash
