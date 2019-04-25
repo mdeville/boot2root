@@ -134,4 +134,20 @@ done
 
 ## L’exploitation
 
+Comme nous avons pu remarquer, il nous est possible de modifier
+les parametres du kernel. En lisant la [documentation](https://www.kernel.org/doc/Documentation/admin-guide/kernel-parameters.txt)
+une option peut nous paraitre bien interessante:
+
+```
+	init=		[KNL]
+			Format: <full_path>
+			Run specified binary instead of /sbin/init as init
+			process.
+```
+
+De ce fait il nous est possible de remplacer le binaire d'**init** par un autre
+comme par exemple un shell:
+
+
+
 ## La post exploitation
