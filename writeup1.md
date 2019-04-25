@@ -115,10 +115,10 @@ Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
 - Apache HTTPD + SSL [Apache httpd 2.2.22 Ubuntu]
 - Dovecot IMAPD + SSL [UNKNOWN]
 
-### Recherche de vulnerabilites
+### Recherche de vulnérabilités
 
 A partir de la liste des services, il est desormais possible de
-rechercher des CVE a l'aide de l'outil searchsploit:
+rechercher des CVE a l'aide de l'outil **searchsploit**:
 
 ```bash
 QUERY=(
@@ -135,8 +135,7 @@ done
 ## L’exploitation
 
 Comme nous avons pu remarquer, il nous est possible de modifier
-les parametres du kernel. En lisant la [documentation](https://www.kernel.org/doc/Documentation/admin-guide/kernel-parameters.txt)
-une option peut nous paraitre bien interessante:
+les paramètres du kernel. En lisant la [documentation](https://www.kernel.org/doc/Documentation/admin-guide/kernel-parameters.txt) une option peut nous paraître bien intéressante:
 
 ```
 	init=		[KNL]
@@ -155,6 +154,5 @@ $KERNEL rw quiet init=/bin/bash
 ![Init 1](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/boot2.png)
 ![Init 2](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/boot3.png)
 
-w00t g0t r00t
-
-## La post exploitation
+Nous sommes désormais en possession d'un shell en tant qu'utilisateur **root**.
+Conclusion, protéger les accès aux paramètres du kernel.
