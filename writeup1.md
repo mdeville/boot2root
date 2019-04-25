@@ -27,6 +27,20 @@ Name: /VirtualBox/GuestInfo/OS/Release, value: 3.2.0-91-generic-pae [...]
 Name: /VirtualBox/GuestInfo/Net/0/V4/IP, value: 10.11.200.46 [...]
 ```
 
+Dans le cas ou les guests additions de VirtualBox ne sont pas installes sur la
+machine virtuelle, il faudra alors recuperer l'adresse MAC de la machine
+(Settings -> Network -> Advanced -> MAC address)
+
+Et ensuite executer les commandes suivantes:
+
+```
+ANALYSER_IP=$(hostname -I | cut -d" " -f1)
+netdiscover -r $ANALYSER_IP/24
+```
+
+De la on doit avoir l'adresse IP ainsi que l'adresse MAC de la machine
+virtuelle.
+
 D'autre part, lors du démarage de la machine virtuelle, il est possible
 en restant appuyé sur la touche **Shift** d'accéder au menu de boot afin
 de pouvoir lancer le kernel du systeme manuellement, et optionnelement lui
