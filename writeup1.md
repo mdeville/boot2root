@@ -32,7 +32,7 @@ en restant appuyé sur la touche **Shift** d'accéder au menu de boot afin
 de pouvoir lancer le kernel du systeme manuellement, et optionnelement lui
 passer certains parametres.
 
-![Boot Menu](http://url/to/img.png)
+![Boot Menu](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/boot1.png)
 
 ## La recherche de vulnérabilités
 
