@@ -42,7 +42,7 @@ De la on doit avoir l'adresse IP ainsi que l'adresse MAC de la machine
 virtuelle.
 
 D'autre part, lors du démarage de la machine virtuelle, il est possible
-en restant appuyé sur la touche **Shift** d'accéder au menu de boot afin
+en restant appuyé sur la touche [Shift](https://wiki.archlinux.org/index.php/GRUB/Tips_and_tricks#Hide_GRUB_unless_the_Shift_key_is_held_down) d'accéder au menu de boot afin
 de pouvoir lancer le kernel du système manuellement, et optionnellement lui
 passer certains paramètres.
 
@@ -150,6 +150,9 @@ comme par exemple un shell:
 ```bash
 $KERNEL rw quiet init=/bin/bash
 ```
+
+Note: La variable `$KERNEL` est le binaire disponible via la completion par la touche **Tab**, dans
+plusieurs cas de tests, il s'avère que le binaire se nomme `live`.
 
 ![Init 1](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/boot2.png)
 ![Init 2](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/boot3.png)
