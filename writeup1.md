@@ -148,6 +148,13 @@ une option peut nous paraitre bien interessante:
 De ce fait il nous est possible de remplacer le binaire d'**init** par un autre
 comme par exemple un shell:
 
+```bash
+$KERNEL rw quiet init=/bin/bash
+```
 
+![Init 1](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/boot2.png)
+![Init 2](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/boot3.png)
+
+w00t g0t r00t
 
 ## La post exploitation
