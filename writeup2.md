@@ -21,3 +21,7 @@ les mails envoyés, nous pouvons remarquer une information assez
 *sensible*:
 
 ![Dossier IMAP](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/mail2.png)
+
+Nous possédons un jeu de crédentiels pour une BDD:
+- Utilisateur: ```root```
+- Mot De Passe: ```Fg-'kKXBj87E:aJ$*```
