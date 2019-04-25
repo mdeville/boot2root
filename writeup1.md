@@ -27,6 +27,13 @@ Name: /VirtualBox/GuestInfo/OS/Release, value: 3.2.0-91-generic-pae [...]
 Name: /VirtualBox/GuestInfo/Net/0/V4/IP, value: 10.11.200.46 [...]
 ```
 
+D'autre part, lors du démarage de la machine virtuelle, il est possible
+en restant appuyé sur la touche **Shift** d'accéder au menu de boot afin
+de pouvoir lancer le kernel du systeme manuellement, et optionnelement lui
+passer certains parametres.
+
+![Boot Menu](http://url/to/img.png)
+
 ## La recherche de vulnérabilités
 
 ## L’exploitation
