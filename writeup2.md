@@ -53,8 +53,9 @@ En testant de se connecter sur le forum avec:
 
 Il est possible d'acceder au compte et d'avoir acces a plus d'informations a propos de l'utilisateur:
 
-![Forum]()
+![Forum](![Boot Menu](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/forum.png)
+)
 
-Nous avons desormais le mail de l'utilisateur: `laurie@borntosec.net`
+Nous sommes en possession du mail de l'utilisateur: `laurie@borntosec.net`
 
 ## Exploitation
