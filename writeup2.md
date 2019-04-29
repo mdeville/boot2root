@@ -273,7 +273,7 @@ $ cat 01IXJ.pcap
 //file265
 ```
 
-Les fichiers sont en realite un seul fichier source C. A l'aide du commentaire de la derniere ligne de chaque fichier, on peut recuperer le l'ordre reel des fichiers.
+Les fichiers sont en realite un seul fichier source C fragmente. A l'aide du commentaire de la derniere ligne de chaque fichier, on peut recuperer le l'ordre reel des fichiers.
 
 ```
 $ ./scripts/lmezard_ftp.py ft_fun > res.c
@@ -291,7 +291,7 @@ $ printf "Iheartpwnage" | openssl sha -sha256
 ### SSH (laurie)
 
 ```
-$ ssh laurie@TARGET
+$ ssh laurie@$TARGET
 password: 330b845f32185747e4f8ca15d40ca59796035c89ea809fb5d30f4da83ecf45a4
 
 $ ls
