@@ -77,7 +77,7 @@ a LOGIN laurie@borntosec.net !q\]Ej?*5K5cy*AJ
 
 a OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE SORT SORT=DISPLAY THREAD=REFERENCES THREAD=REFS MULTIAPPEND UNSELECT CHILDREN NAMESPACE UIDPLUS LIST-EXTENDED I18NLEVEL=1 CONDSTORE QRESYNC ESEARCH ESORT SEARCHRES WITHIN CONTEXT=SEARCH LIST-STATUS] Logged in
 
-a LIST "*" "*"     
+a LIST "*" "*"
 
 * LIST (\NoInferiors \UnMarked) "/" "INBOX.Drafts"
 * LIST (\NoInferiors \Marked) "/" "INBOX.Sent"
@@ -230,8 +230,87 @@ nous avons acces a un dossier:
 
 ![ftp](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/ftp.png)
 
-Nous telechargeons son contenu.
+Nous telechargeons son contenu:
+```
+$ cat README
+Complete this little challenge and use the result as password for user 'laurie' to login in ssh
+$ file fun
+/tmp/fun: POSIX tar archive (GNU)
+```
 
 ## Exploitation
 
-WIP !
+```
+$ tar xf fun
+
+$ ls ft_fun
+00M73.pcap
+01IXJ.pcap
+0564G.pcap
+05GXI.pcap
+08GIC.pcap
+08UKO.pcap
+0B2GJ.pcap
+0D70A.pcap
+0E2HD.pcap
+0EQD2.pcap
+...
+ZLAL8.pcap
+ZM2BG.pcap
+ZOUC4.pcap
+ZP1ZN.pcap
+ZPY1Q.pcap
+ZQTK1.pcap
+
+$ cat 00M73.pcap
+void useless() {
+
+//file12
+
+$ cat 01IXJ.pcap
+}void useless() {
+
+//file265
+```
+
+Les fichiers sont en realite un seul fichier source C. A l'aide du commentaire de la derniere ligne de chaque fichier, on peut recuperer le l'ordre reel des fichiers.
+
+```
+$ ./scripts/lmezard_ftp.py ft_fun > res.c
+
+$ gcc res.c
+
+$ ./a.out
+MY PASSWORD IS: Iheartpwnage
+Now SHA-256 it and submit
+
+$ printf "Iheartpwnage" | openssl sha -sha256
+330b845f32185747e4f8ca15d40ca59796035c89ea809fb5d30f4da83ecf45a4
+```
+
+### SSH (laurie)
+
+```
+$ ssh laurie@TARGET
+password: 330b845f32185747e4f8ca15d40ca59796035c89ea809fb5d30f4da83ecf45a4
+
+$ ls
+README
+bomb
+
+$ cat README
+Diffuse this bomb!
+When you have all the password use it as "thor" user with ssh.
+
+HINT:
+P
+ 2
+ b
+
+o
+4
+
+NO SPACE IN THE PASSWORD (password is case sensitive).
+$ file bomb
+bomb: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.0.0, not stripped
+```
