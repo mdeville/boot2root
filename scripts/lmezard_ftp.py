@@ -4,6 +4,10 @@ import re
 import os
 import sys
 
+if len(sys.argv) == 1:
+    print("usage: {} fun_directory".format(sys.argv[0]))
+    sys.exit(1)
+
 FILE_NO = r"file(\d+)"
 FILE_NO_REG = re.compile(FILE_NO)
 
