@@ -425,6 +425,43 @@ $ ssh thor@$TARGET
 password: Publicspeakingisveryeasy.126241207201b2149opekmq426135
 
 (thor) $ ls
-exploit_me
+turtle
 README
+```
+
+En observant le fichier *turtle*, nous pouvons constater des instructions de mouvement.
+En cherchant un peu, il est intéressant de noter que *turtle* est un petit framework
+graphique pour exécuter des instructions simple.
+
+En utilisant un éditeur de texte (~~vim~~emacs), il est possible de remplacer les portions
+de textes en code python afin de transpiler le pseudo-code en code évaluable.
+
+Une fois exécute, le programme affiche de manière destructure 5 lettres:
+- S
+- L
+- A
+- S
+- H
+
+En utilisant ce mot de passe pour se connecter, on peu constater que le jeu de mot de passe
+est incorrecte.
+
+En relisant le sujet, nous pouvons souligner un passage intéressant:
+```
+Can you digest the message? :)
+```
+
+Après le test de différents algorithmes de hash, ils s'avère que le digest *MD5*
+produit le bon mot de passe:
+
+```
+$ printf "SLASH" | openssl md5
+646da671ca01bb5d84dbb5fb2238dc8e
+
+$ ssh zaz@$TARGET
+password: 646da671ca01bb5d84dbb5fb2238dc8e
+
+(zaz) $ ls -1
+exploit_me
+mail
 ```
