@@ -462,7 +462,7 @@ $ printf "SLASH" | openssl md5
 ### SSH (zaz)
 
 ```
-$ ssh thor@TARGET
+$ ssh zaz@TARGET
 password: 646da671ca01bb5d84dbb5fb2238dc8e 
 ```
 
